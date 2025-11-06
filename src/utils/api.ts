@@ -1,4 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+const baseUrl =
+  typeof window === 'undefined' ? process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000' : '';
+
 const makePost = (url: string, body: string, options: { headers?: Record<string, string> }) => {
   const headers = options.headers || {};
   return fetch(url, {
@@ -75,4 +79,16 @@ export const createProfile = (data: any) => {
   const url = `/api/profile`;
   const body = { ...data };
   return makeJSONPost(url, body, { headers: {} });
+};
+
+export const getProjects = async () => {
+  const url = `${baseUrl}/api/projects`;
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {},
+  });
+  if (!res.ok) {
+    throw new Error('Failed to fetch projects');
+  }
+  return res.json();
 };
