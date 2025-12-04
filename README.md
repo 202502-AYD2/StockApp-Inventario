@@ -3,7 +3,7 @@
 # Integrantes
 - Santiago Correa Marulanda
 - Andres Felipe Giraldo Yusti
-- Juan Sebastian Andraus
+- Juan Sebastian Andraus Lopez
 
 ### Usuarios para acceder
 
