@@ -1,6 +1,6 @@
-#StockApp
+# StockApp
 
-#Integrantes
+# Integrantes
 - Santiago Correa Marulanda
 - Andres Felipe Giraldo Yusti
 - Juan Sebastian Andraus
