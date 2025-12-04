@@ -4,6 +4,8 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// schema.prisma
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,121 +15,61 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum ENUM_ROLE {
+// 1. Roles según el PDF (ADMIN y USER) 
+enum EnumRole {
   ADMIN
-  PM
-  DEV
+  USER
 }
 
-enum ENUM_CATEGORY {
-  FRONTEND
-  BACKEND
-  FULLSTACK
-  MOBILE
-  DESIGN
-  DEVOPS
+// 2. Tipos de movimiento (Entrada o Salida) [cite: 43]
+enum EnumMovementType {
+  ENTRADA
+  SALIDA
 }
 
-enum ENUM_STATUS {
-  PLANNING
-  IN_PROGRESS
-  COMPLETED
-  ON_HOLD
-  CANCELLED
-}
-
-enum ENUM_CATEGORY_TASK {
-  BUG
-  FEATURE
-  IMPROVEMENT
-  RESEARCH
-}
-
-enum ENUM_STATUS_TASK {
-  TO_DO
-  IN_PROGRESS
-  DONE
-  BLOCKED
-}
-
+// 3. Modelo de Usuario
 model User {
-  id            String    @id @default(uuid())
-  username      String
-  lastname      String
-  email         String    @unique
-  phone         String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  createdBy     String
-  deleted       Boolean   @default(false)
-  enabled       Boolean   @default(true)
-  role          ENUM_ROLE @default(DEV)
-  profile       Profile?
-  projectManage Project[] @relation("Manager")
-  devProjects   Project[] @relation("DevProjects")
-  task          Task[]
-}
-
-model Profile {
   id        String   @id @default(uuid())
-  address   String
-  city      String
-  country   String
-  image     String
-  bio       String
+  email     String   @unique // Para el login [cite: 12]
+  name      String?  // Nombre para mostrar en el sidebar [cite: 32]
+  role      EnumRole @default(USER) // Rol por defecto
+  image     String?  // Foto del usuario [cite: 32]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  createdBy String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique
+  
+  // Relaciones
+  movements Movement[] // Un usuario hace muchos movimientos [cite: 47]
+  createdMaterials Material[] // Un usuario (ADMIN) crea materiales [cite: 55]
 }
 
-model Project {
-  id               String        @id @default(uuid())
-  projectName      String
-  description      String
-  category         ENUM_CATEGORY
-  projectManager   User          @relation("Manager", fields: [projectManagerId], references: [id])
-  projectManagerId String
-  startDate        DateTime
-  endDate          DateTime
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  createdBy        String
-  deleted          Boolean       @default(false)
-  effortEstimation Int
-  client           Client        @relation(fields: [clientId], references: [id])
-  clientId         String
-  status           ENUM_STATUS   @default(PLANNING)
-  devs             User[]        @relation("DevProjects")
-  task             Task[]
+// 4. Modelo de "Maestro" (Inventario/Material)
+// [cite: 54, 55] "Tabla para visualizar Maestros... id, nombre, saldo, creador"
+model Material {
+  id          String   @id @default(uuid())
+  name        String
+  saldo       Int      // Saldo actual del inventario [cite: 55]
+  createdAt   DateTime @default(now())
+  
+  // Quién creó el maestro
+  createdBy   User     @relation(fields: [createdById], references: [id])
+  createdById String
+
+  // Relaciones
+  movements   Movement[] // Un material tiene muchos movimientos
 }
 
-model Client {
-  id        String    @id @default(uuid())
-  name      String
-  email     String
-  phone     String
-  address   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  createdBy String
-  projects  Project[]
-}
+// 5. Modelo de Transacción (Movimiento)
+// [cite: 40] "Tabla para visualizar movimientos... id, fecha, cantidad, responsable"
+model Movement {
+  id          String           @id @default(uuid())
+  type        EnumMovementType // ENTRADA o SALIDA [cite: 43]
+  quantity    Int              // Cantidad de elementos [cite: 45]
+  date        DateTime         @default(now()) // Fecha del movimiento [cite: 40]
 
-model Task {
-  id            String             @id @default(uuid())
-  title         String
-  description   String
-  category      ENUM_CATEGORY_TASK
-  status        ENUM_STATUS_TASK
-  responsible   User?              @relation(fields: [responsibleId], references: [id])
-  responsibleId String?
-  priority      Int
-  dueDate       DateTime
-  createdAt     DateTime           @default(now())
-  updatedAt     DateTime           @updatedAt
-  createdBy     String
-  project       Project            @relation(fields: [projectId], references: [id])
-  projectId     String
+  // Relaciones
+  material    Material         @relation(fields: [materialId], references: [id])
+  materialId  String           // El maestro al que afecta
+
+  user        User             @relation(fields: [userId], references: [id])
+  userId      String           // La persona que ejecutó el movimiento [cite: 40]
 }
