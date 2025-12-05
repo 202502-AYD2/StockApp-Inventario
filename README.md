@@ -22,6 +22,14 @@ correo: user@test.com
 contraseña: 123456
 
 
+## Despliegue
+
+Para entrar al website desplegado en vercel ingrese [aquí](https://stock-app-inventario-qmuq.vercel.app/)
+
+## Informe o documentación
+
+Para revisar el informe o documentación, ingrese a la carpeta "informe".
+
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
