@@ -1,136 +1,3 @@
-//import { useEffect, useState } from 'react';
-//import { useRouter } from 'next/router';
-//import { createClient } from '@supabase/supabase-js';
-//import Layout from '@/components/Organisms/Layout';
-//import { Users, Shield, ShieldAlert } from 'lucide-react';
-//
-//// Inicializar cliente Supabase
-//const supabase = createClient(
-//  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-//  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-//);
-//
-//export default function GestionUsuarios() {
-//  const router = useRouter();
-//  const [usersList, setUsersList] = useState<any[]>([]);
-//  const [loading, setLoading] = useState(true);
-//  const [currentUser, setCurrentUser] = useState<any>(null);
-//
-//  useEffect(() => {
-//    // 1. VERIFICACIÓN DE SEGURIDAD (¿Eres Admin?)
-//    const session = localStorage.getItem('user_session');
-//    if (!session) {
-//      router.push('/login');
-//      return;
-//    }
-//
-//    const user = JSON.parse(session);
-//    setCurrentUser(user);
-//
-//    if (user.role !== 'ADMIN') {
-//      // Si no es admin, lo expulsamos al dashboard normal
-//      alert("Acceso denegado: Se requieren permisos de Administrador.");
-//      router.push('/dashboard');
-//      return;
-//    }
-//
-//    // 2. CARGAR LA LISTA DE USUARIOS (Solo si eres Admin llegas aquí)
-//    fetchUsers();
-//  }, [router]);
-//
-//  const fetchUsers = async () => {
-//    try {
-//      // OJO: Asegúrate que la tabla coincida con tu base de datos ('User' o 'users')
-//      const { data, error } = await supabase
-//        .from('User') 
-//        .select('*')
-//        .order('id', { ascending: true });
-//
-//      if (error) throw error;
-//      setUsersList(data || []);
-//    } catch (error) {
-//      console.error("Error cargando usuarios:", error);
-//    } finally {
-//      setLoading(false);
-//    }
-//  };
-//
-//  if (loading) return <div className="p-8">Cargando sistema de administración...</div>;
-//
-//  return (
-//    <Layout>
-//      <div className="space-y-6">
-//        
-//        {/* Encabezado */}
-//        <div className="flex items-center justify-between">
-//          <div>
-//            <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-//              <Users className="h-8 w-8 text-primary" />
-//              Gestión de Usuarios
-//            </h1>
-//            <p className="text-muted-foreground mt-1">
-//              Visualiza y administra los roles de los empleados.
-//            </p>
-//          </div>
-//          <div className="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium border border-blue-200">
-//            Total Usuarios: {usersList.length}
-//          </div>
-//        </div>
-//
-//        {/* Tabla de Usuarios */}
-//        <div className="border rounded-lg shadow-sm bg-white overflow-hidden">
-//          <table className="w-full text-sm text-left">
-//            <thead className="bg-muted/50 text-muted-foreground font-medium border-b">
-//              <tr>
-//                <th className="px-6 py-4">Nombre</th>
-//                <th className="px-6 py-4">Correo Electrónico</th>
-//                <th className="px-6 py-4">Rol</th>
-//                <th className="px-6 py-4">ID de Sistema</th>
-//              </tr>
-//            </thead>
-//            <tbody className="divide-y">
-//              {usersList.map((usuario) => (
-//                <tr key={usuario.id} className="hover:bg-muted/5 transition-colors">
-//                  <td className="px-6 py-4 font-medium flex items-center gap-3">
-//                    <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-600">
-//                       {usuario.name?.charAt(0).toUpperCase()}
-//                    </div>
-//                    {usuario.name}
-//                  </td>
-//                  <td className="px-6 py-4 text-muted-foreground">
-//                    {usuario.email}
-//                  </td>
-//                  <td className="px-6 py-4">
-//                    {usuario.role === 'ADMIN' ? (
-//                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-//                        <Shield className="h-3 w-3" />
-//                        Administrador
-//                      </span>
-//                    ) : (
-//                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-//                        Usuario
-//                      </span>
-//                    )}
-//                  </td>
-//                  <td className="px-6 py-4 text-xs text-muted-foreground font-mono">
-//                    {usuario.id}
-//                  </td>
-//                </tr>
-//              ))}
-//            </tbody>
-//          </table>
-//          
-//          {usersList.length === 0 && (
-//            <div className="p-8 text-center text-muted-foreground">
-//              No se encontraron usuarios registrados.
-//            </div>
-//          )}
-//        </div>
-//      </div>
-//    </Layout>
-//  );
-//}
-
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { createClient } from '@supabase/supabase-js';
@@ -158,9 +25,9 @@ export default function GestionUsuarios() {
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<any>(null);
   
-  // Estado para controlar el formulario (Crear o Editar)
+  // Estado para controlar el formulario Crear o Editar
   const [showForm, setShowForm] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null); // Si es null, estamos creando. Si tiene ID, editamos.
+  const [editingId, setEditingId] = useState<string | null>(null); // Si es null, estamos creando. Si tiene ID entnces editamos.
 
   const [formData, setFormData] = useState({
     name: '',
@@ -203,30 +70,30 @@ export default function GestionUsuarios() {
     }
   };
 
-  // --- ABRIR FORMULARIO PARA CREAR ---
+  // ABRIR FORMULARIO PARA CREAR
   const handleOpenCreate = () => {
-    setEditingId(null); // Modo crear
+    setEditingId(null); // modo crear
     setFormData({ name: '', email: '', password: '', role: 'USER' });
     setShowForm(true);
   };
 
-  // --- ABRIR FORMULARIO PARA EDITAR ---
+  // -ABRIR FORMULARIO PARA EDITAR 
   const handleOpenEdit = (user: any) => {
     setEditingId(user.id); // Modo edición
     setFormData({
       name: user.name,
       email: user.email,
-      password: '', // Dejamos vacío por seguridad (si no escribe nada, no se cambia)
+      password: '', // Dejamos vacio por seguridad si no escribe nada, no se cambia
       role: user.role
     });
     setShowForm(true);
   };
 
-  // --- GUARDAR (CREAR O ACTUALIZAR) ---
+  // GUARDAR, CREAR O ACTUALIZAR
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validaciones básicas
+    // Validaciones basicas
     if (!formData.name || !formData.email) {
         alert("Nombre y Correo son obligatorios");
         return;
@@ -239,7 +106,7 @@ export default function GestionUsuarios() {
 
     try {
         if (editingId) {
-            // === MODO EDICIÓN ===
+            // modo edicion
             const updates: any = {
                 name: formData.name,
                 email: formData.email,
@@ -247,7 +114,7 @@ export default function GestionUsuarios() {
                 updatedAt: new Date().toISOString()
             };
             
-            // Solo actualizamos contraseña si el usuario escribió una nueva
+            // Solo actualizamos contraseña si el usuario escribe una nueva
             if (formData.password.trim() !== "") {
                 updates.password = formData.password;
             }
@@ -261,7 +128,7 @@ export default function GestionUsuarios() {
             alert("Usuario actualizado correctamente.");
 
         } else {
-            // === MODO CREACIÓN ===
+            // MODO CREACIOn
             // Validar si correo existe
             const { data: existing } = await supabase
                 .from('User')
@@ -274,7 +141,7 @@ export default function GestionUsuarios() {
                 return;
             }
 
-            const randomId = `user-${Date.now()}`; // ID manual único
+            const randomId = `user-${Date.now()}`; // ID manual unico
             const { error } = await supabase.from('User').insert([{
                 id: randomId,
                 name: formData.name,
@@ -298,7 +165,7 @@ export default function GestionUsuarios() {
     }
   };
 
-  // --- ELIMINAR USUARIO ---
+  // Eliminar usuario
   const handleDelete = async (userId: string) => {
     if (userId === currentUser.id) {
         alert("No puedes eliminarte a ti mismo.");
@@ -348,7 +215,7 @@ export default function GestionUsuarios() {
           </button>
         </div>
 
-        {/* --- FORMULARIO UNIFICADO (CREAR / EDITAR) --- */}
+        {/* FORMULARIO UNIFICADO (CREAR Y EDITAR) */}
         {showForm && (
             <div className="bg-white p-6 rounded-xl border shadow-lg ring-1 ring-black/5 mb-6 border-l-4 border-l-primary">
                 <h3 className="font-bold text-lg mb-4 text-gray-800 flex items-center gap-2">
@@ -406,7 +273,7 @@ export default function GestionUsuarios() {
                         </select>
                     </div>
 
-                    {/* Botón Guardar */}
+                    {/* Boton Guardar */}
                     <div className="lg:col-span-1">
                         <button 
                             type="submit" 
@@ -419,7 +286,7 @@ export default function GestionUsuarios() {
             </div>
         )}
 
-        {/* --- LISTA DE USUARIOS --- */}
+        {/* lista de usuarios */}
         <div className="bg-white border rounded-lg shadow-sm overflow-hidden">
           <table className="w-full text-sm text-left">
             <thead className="bg-gray-50 text-gray-600 font-medium border-b">
@@ -455,7 +322,7 @@ export default function GestionUsuarios() {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
-                        {/* Botón Editar */}
+                        {/* Boton Editar */}
                         <button
                             onClick={() => handleOpenEdit(usuario)}
                             className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
@@ -464,7 +331,7 @@ export default function GestionUsuarios() {
                             <Edit className="h-4 w-4" />
                         </button>
 
-                        {/* Botón Eliminar */}
+                        {/* Boton Eliminar */}
                         <button
                             onClick={() => handleDelete(usuario.id)}
                             disabled={usuario.id === currentUser.id} // No borrarse a sí mismo

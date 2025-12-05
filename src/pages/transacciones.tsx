@@ -25,7 +25,7 @@ export default function TransaccionesPage() {
   });
 
   useEffect(() => {
-    // 1. Verificar Sesión (Admin y User pueden entrar)
+    // Verificar Sesion (Admin y User pueden entrar)
     const session = localStorage.getItem('user_session');
     if (!session) {
       router.push('/login');
@@ -36,7 +36,7 @@ export default function TransaccionesPage() {
   }, [router]);
 
   const fetchData = async () => {
-    // A. Cargar lista de productos para el Select (dropdown)
+    // Cargar lista de productos para el Select
     const { data: prodData } = await supabase
         .from('Product')
         .select('id, name, stock')
@@ -44,8 +44,8 @@ export default function TransaccionesPage() {
         
     if (prodData) setProducts(prodData);
 
-    // B. Cargar historial de movimientos
-    // Nota: 'Product(name)' es un JOIN automático para traer el nombre del producto
+    // Cargar historial de movimientos
+    
     const { data: movData } = await supabase
       .from('Movement')
       .select('*, Product(name)') 
@@ -72,14 +72,14 @@ export default function TransaccionesPage() {
 
       if (error) throw error;
 
-      // Si todo sale bien:
+      // Si todo sale bien
       setFormData({ ...formData, quantity: 1 }); // Reiniciar cantidad
-      await fetchData(); // Recargar la tabla y los productos (para ver el nuevo stock)
+      await fetchData(); // Recargar la tabla y los productos
       alert("¡Transacción registrada con éxito!");
 
     } catch (err: any) {
       console.error(err);
-      // Aquí atrapamos el error del Trigger (Ej: "No hay suficiente stock")
+      // Aqui atrapamos el error del Trigger
       setErrorMsg(err.message || "Ocurrió un error al registrar.");
     } finally {
       setLoading(false);
@@ -103,7 +103,7 @@ export default function TransaccionesPage() {
             </div>
         </div>
 
-        {/* --- FORMULARIO DE REGISTRO --- */}
+        {/* FORMULARIO DE REGISTRO*/}
         <div className="bg-white p-6 rounded-xl border shadow-sm">
           <div className="flex items-center gap-2 mb-4 border-b pb-2">
             <PlusCircle className="h-5 w-5 text-green-600" /> 
@@ -119,7 +119,7 @@ export default function TransaccionesPage() {
           
           <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4 items-end">
             
-            {/* 1. Selector de Producto */}
+            {/* Selector de Producto */}
             <div className="w-full md:w-1/3">
               <label className="text-sm font-medium mb-1 block text-gray-700">Producto</label>
               <select 
@@ -137,7 +137,7 @@ export default function TransaccionesPage() {
               </select>
             </div>
 
-            {/* 2. Tipo de Movimiento */}
+            {/* Tipo de Movimiento */}
             <div className="w-full md:w-1/4">
               <label className="text-sm font-medium mb-1 block text-gray-700">Acción</label>
               <div className="relative">
@@ -156,7 +156,7 @@ export default function TransaccionesPage() {
               </div>
             </div>
 
-            {/* 3. Cantidad */}
+            {/* Cantidad */}
             <div className="w-full md:w-1/4">
               <label className="text-sm font-medium mb-1 block text-gray-700">Cantidad</label>
               <input 
@@ -169,7 +169,7 @@ export default function TransaccionesPage() {
               />
             </div>
 
-            {/* Botón Submit */}
+            {/* Boton Submit */}
             <button 
               type="submit" 
               disabled={loading}
@@ -180,7 +180,7 @@ export default function TransaccionesPage() {
           </form>
         </div>
 
-        {/* --- TABLA DE HISTORIAL --- */}
+        {/* TABLA DE HISTORIAL*/}
         <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
           <div className="p-4 bg-gray-50/50 border-b flex items-center justify-between">
              <div className="flex items-center gap-2">

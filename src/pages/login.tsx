@@ -1,23 +1,10 @@
-//import { LoginForm } from "@/components/login-form"
-//
-//export default function LoginPage() {
-//  return (
-//    <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
-//      <div className="w-full max-w-sm md:max-w-4xl">
-//        <LoginForm />
-//      </div>
-//    </div>
-//  )
-//}
-//
-
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
 import { LayoutDashboard, Loader2, AlertCircle } from 'lucide-react';
 
-// Inicializa Supabase (Asegúrate de tener tus variables en .env)
+// Inicializa Supabase
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -39,7 +26,7 @@ const handleLogin = async (e: React.FormEvent) => {
     setError(''); // Limpiamos errores previos
 
     try {
-      // Usamos maybeSingle() para que no lance error si no encuentra nada, solo devuelve null
+      // Usamos maybeSingle para que no lance error si no encuentra nada, solo devuelve null
       const { data: user, error: dbError } = await supabase
         .from('User') 
         .select('*')
@@ -47,34 +34,34 @@ const handleLogin = async (e: React.FormEvent) => {
         .eq('password', formData.password)
         .maybeSingle(); 
 
-      // 1. Si hubo un error TÉCNICO de la base de datos (conexión, permisos, etc.)
+      // Si hubo un error de la base de datos
       if (dbError) {
         console.error("Error BD:", dbError);
         setError("Ocurrió un error de conexión. Intenta más tarde.");
         return; // Detenemos la función aquí
       }
       
-      // 2. Si NO hubo error técnico, pero el usuario no apareció (Credenciales mal)
+      // 2. Si NO hubo error, pero el usuario no apareció o tiene mal las credenciales
       if (!user) {
-        // AQUÍ ESTÁ EL CAMBIO: No lanzamos 'throw', solo ponemos el mensaje
+        //  solo ponemos el mensaje
         setError('Credenciales inválidas o usuario no encontrado.');
-        return; // Detenemos la función aquí suavemente
+        return; // Detenemos la funcion aqui
       }
 
-      // 3. Si llegamos aquí, es ÉXITO
+      // si
       localStorage.setItem('user_session', JSON.stringify(user));
 
-      // --- CAMBIO: REDIRECCIÓN INTELIGENTE ---
-      // Verificamos si es ADMIN para llevarlo a su zona especial
+      
+      // Verificamos si es ADMIN para llevarlo a su pagina especifica
       if (user.role === 'ADMIN') {
-        router.push('/dashboard'); // Llevamos al jefe a gestionar usuarios
+        router.push('/dashboard'); // Llevamos al admin a gestionar usuarios
       } else {
         router.push('/dashboard'); // El resto al dashboard normal
       }
-      // ---------------------------------------
+      
 
     } catch (err: any) {
-      // Esto solo atrapa errores inesperados (crashes reales)
+      // Esto solo atrapa errores inesperados
       console.error("Error inesperado:", err);
       setError("Algo salió mal inesperadamente.");
     } finally {

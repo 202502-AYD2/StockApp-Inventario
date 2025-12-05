@@ -1,173 +1,3 @@
-//import * as React from 'react';
-//import {
-//  IconCamera,
-//  IconChartBar,
-//  IconDashboard,
-//  IconDatabase,
-//  IconFileAi,
-//  IconFileDescription,
-//  IconFileWord,
-//  IconFolder,
-//  IconHelp,
-//  IconListDetails,
-//  IconReport,
-//  IconSearch,
-//  IconSettings,
-//  IconUsers,
-//} from '@tabler/icons-react';
-//
-//import { NavDocuments } from '@/components/nav-documents';
-//import { NavMain } from '@/components/nav-main';
-//import { NavUser } from '@/components/nav-user';
-//import {
-//  Sidebar,
-//  SidebarContent,
-//  SidebarFooter,
-//  SidebarHeader,
-//  SidebarMenu,
-//  SidebarMenuItem,
-//} from '@/components/ui/sidebar';
-//
-//const data = {
-//  user: {
-//    name: 'Miguel Angel',
-//    email: 'Miguel@prdod.com',
-//    avatar: '/avatars/shadcn.jpg',
-//  },
-//  navMain: [
-//    {
-//      title: 'Dashboard',
-//      url: '/dashboard',
-//      icon: IconDashboard,
-//    },
-//    {
-//      title: 'Mis Tareas',
-//      url: '/tasks',
-//      icon: IconListDetails,
-//    },
-//    {
-//      title: 'Notifications',
-//      url: '/notifications',
-//      icon: IconChartBar,
-//    },
-//    {
-//      title: 'Projects',
-//      url: '/project',
-//      icon: IconFolder,
-//    },
-//    {
-//      title: 'Team',
-//      url: '/team',
-//      icon: IconUsers,
-//    },
-//  ],
-//  navClouds: [
-//    {
-//      title: 'Capture',
-//      icon: IconCamera,
-//      isActive: true,
-//      url: '#',
-//      items: [
-//        {
-//          title: 'Active Proposals',
-//          url: '#',
-//        },
-//        {
-//          title: 'Archived',
-//          url: '#',
-//        },
-//      ],
-//    },
-//    {
-//      title: 'Proposal',
-//      icon: IconFileDescription,
-//      url: '#',
-//      items: [
-//        {
-//          title: 'Active Proposals',
-//          url: '#',
-//        },
-//        {
-//          title: 'Archived',
-//          url: '#',
-//        },
-//      ],
-//    },
-//    {
-//      title: 'Prompts',
-//      icon: IconFileAi,
-//      url: '#',
-//      items: [
-//        {
-//          title: 'Active Proposals',
-//          url: '#',
-//        },
-//        {
-//          title: 'Archived',
-//          url: '#',
-//        },
-//      ],
-//    },
-//  ],
-//  navSecondary: [
-//    {
-//      title: 'Settings',
-//      url: '#',
-//      icon: IconSettings,
-//    },
-//    {
-//      title: 'Get Help',
-//      url: '#',
-//      icon: IconHelp,
-//    },
-//    {
-//      title: 'Search',
-//      url: '#',
-//      icon: IconSearch,
-//    },
-//  ],
-//  documents: [
-//    {
-//      name: 'User Management',
-//      url: '/users',
-//      icon: IconDatabase,
-//    },
-//    {
-//      name: 'Reports',
-//      url: '/reports',
-//      icon: IconReport,
-//    },
-//    {
-//      name: 'Integrations',
-//      url: '/integrations',
-//      icon: IconFileWord,
-//    },
-//  ],
-//};
-//
-//export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-//  return (
-//    <Sidebar collapsible='offcanvas' {...props}>
-//      <SidebarHeader>
-//        <SidebarMenu>
-//          <SidebarMenuItem>
-//            <img src='/LOGOTAREAS.png' alt='Logo' />
-//          </SidebarMenuItem>
-//        </SidebarMenu>
-//      </SidebarHeader>
-//      <SidebarContent>
-//        <NavMain items={data.navMain} />
-//        <NavDocuments items={data.documents} />
-//      </SidebarContent>
-//      <SidebarFooter>
-//        <NavUser user={data.user} />
-//      </SidebarFooter>
-//    </Sidebar>
-//  );
-//}
-//
-
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -199,7 +29,7 @@ export function AppSidebar() {
 
   useEffect(() => {
     setIsMounted(true);
-    // 1. Leemos quién inició sesión desde el LocalStorage
+    // Leemos quien inicio sesion desde el LocalStorage
     const storedSession = localStorage.getItem("user_session");
     if (storedSession) {
       setUser(JSON.parse(storedSession));
@@ -211,12 +41,12 @@ export function AppSidebar() {
     router.push("/");
   };
 
-  // Evitamos errores de hidratación esperando a que monte el componente
+  // evitamos errores esperando a que monte el componente
   if (!isMounted) return null;
 
   return (
     <Sidebar>
-      {/* --- HEADER (Logo) --- */}
+      {/* header o logo*/}
       <SidebarHeader className="p-4 border-b">
         <div className="flex items-center gap-2 font-bold text-xl text-primary">
           <Package className="h-6 w-6" />
@@ -224,14 +54,14 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
 
-      {/* --- CONTENT (Menú Principal) --- */}
+      {/*Menu Principal*/}
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Plataforma</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               
-              {/* 1. Dashboard (Para TODOS) */}
+              {/* Dashboard Para TODOS*/}
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <Link href="/dashboard" className="flex gap-2">
@@ -241,7 +71,7 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              {/* 2. Transacciones (Para TODOS) */}
+              {/*TransaccionesPara TODOS*/}
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <Link href="/transacciones" className="flex gap-2">
@@ -251,7 +81,7 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              {/* 3. Maestros (Para TODOS ver, pero editar solo Admin) */}
+              {/* maestros Todos pueden ver, pero editar solo puede Admin*/}
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <Link href="/maestros" className="flex gap-2">
@@ -261,7 +91,7 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              {/* 4. Usuarios (SOLO PARA ADMIN) - Aquí está la magia del PDF */}
+              {/* usuarios SOLO PARA ADMIN */}
               {user?.role === "ADMIN" && (
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild className="">
@@ -278,13 +108,13 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      {/* --- FOOTER (Usuario Logueado) --- */}
+      {/*FOOTER usuario Logueado */}
       <SidebarFooter className="border-t p-4">
         {user ? (
           <div className="flex flex-col gap-4">
-            {/* Tarjeta del Usuario */}
+            {/*tarjeta del Usuario */}
             <div className="flex items-center gap-3 bg-sidebar-accent/50 p-2 rounded-lg">
-              {/* Avatar Generado con Iniciales */}
+              {/* imagen Generada con iniciales */}
               <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-lg shadow-sm">
                 {user.name ? user.name.charAt(0).toUpperCase() : "U"}
               </div>
@@ -297,7 +127,7 @@ export function AppSidebar() {
               </div>
             </div>
 
-            {/* Botón Cerrar Sesión */}
+            {/* Boton Cerrar Sesion */}
             <button 
               onClick={handleLogout}
               className="flex items-center gap-2 text-xs text-muted-foreground hover:text-destructive transition-colors px-2"

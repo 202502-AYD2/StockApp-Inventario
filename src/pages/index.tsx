@@ -1,29 +1,3 @@
-//import React, { useEffect, useState } from 'react';
-//import { useRouter } from 'next/router';
-//
-//const Index = () => {
-//  const [token, setToken] = useState<string | null>(null);
-//  const router = useRouter();
-//  useEffect(() => {
-//    const storedToken = localStorage.getItem('token');
-//    if (storedToken) {
-//      setToken(storedToken);
-//    } else {
-//      router.push('/login');
-//    }
-//  }, []);
-//  if (token) {
-//    return <div className=' w-full flex flex-col items-center justify-center  h-screen'></div>;
-//  } else {
-//    return <div>Redirecting to login...</div>;
-//  }
-//};
-//
-//export default Index;
-//
-//
-
-
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -33,7 +7,7 @@ import { Package, ArrowRightLeft, Users, LayoutDashboard } from 'lucide-react';
 export default function LandingPage() {
   const router = useRouter();
 
-  // Si ya hay token (usuario logueado), lo mandamos directo adentro.
+  // Si ya hay token o usuario logueado, lo mandamos directo adentro
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -48,7 +22,7 @@ export default function LandingPage() {
         <meta name="description" content="Sistema de control de inventarios y usuarios" />
       </Head>
 
-      {/* --- NAV (Ahora más limpio, solo Logo) --- */}
+      {/* NAV*/}
       <nav className="w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 max-w-screen-2xl items-center px-4 md:px-8 mx-auto">
           <div className="flex items-center gap-2 font-bold text-xl">
@@ -59,11 +33,11 @@ export default function LandingPage() {
               StockApp
             </span>
           </div>
-          {/* Se eliminó el enlace "Acceso Administrativo" de aquí */}
+          {}
         </div>
       </nav>
 
-      {/* --- HERO SECTION --- */}
+      {/* Seccion Hero*/}
       <main className="flex-1">
         <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
           <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center mx-auto px-4">
@@ -83,7 +57,7 @@ export default function LandingPage() {
               Gestiona inventarios, registra transacciones de entrada/salida y administra roles de usuario en una sola plataforma segura.
             </p>
 
-            {/* BOTÓN ÚNICO DE ACCESO */}
+            {/* BOTON UNICO DE ACCESO */}
             <div className="space-x-4 animate-fade-in-up animation-delay-300 pt-4">
               <Link
                 href="/login"
@@ -96,7 +70,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* --- FEATURES (Importante para la nota de Diseño) --- */}
+        {/* FEATURES */}
         <section className="container space-y-6 py-8 md:py-12 lg:py-24 mx-auto px-4">
           <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
             
@@ -134,7 +108,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* --- FOOTER --- */}
+      {/* FOOTER */}
       <footer className="py-6 md:px-8 md:py-0 border-t border-border/40">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row mx-auto">
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">

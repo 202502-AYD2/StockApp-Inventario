@@ -4,6 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import Layout from '@/components/Organisms/Layout';
 import { Package, Plus, Search, Tag, Box } from 'lucide-react';
 
+//supabase y credenciales
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -15,7 +16,7 @@ export default function MaestrosPage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   
-  // Estado para el formulario de crear (Modal o expandible)
+  // Estado para el formulario de crear
   const [isCreating, setIsCreating] = useState(false);
   const [newProduct, setNewProduct] = useState({ 
     name: '', 
@@ -24,7 +25,7 @@ export default function MaestrosPage() {
   });
 
   useEffect(() => {
-    // 1. Verificación de sesión
+    // Verificacion de sesion
     const session = localStorage.getItem('user_session');
     if (!session) {
       router.push('/login');
@@ -38,7 +39,7 @@ export default function MaestrosPage() {
     const { data } = await supabase
       .from('Product')
       .select('*')
-      .order('id', { ascending: true }); // Ordenar por ID o nombre
+      .order('id', { ascending: true }); // Ordenar por id o nombre
       
     if (data) setProducts(data);
   };
@@ -53,7 +54,7 @@ export default function MaestrosPage() {
       const { error } = await supabase.from('Product').insert([{
         name: newProduct.name,
         code: newProduct.code,
-        stock: parseInt(String(newProduct.stock)) // Asegurar que sea número
+        stock: parseInt(String(newProduct.stock)) // Asegurar que sea numero
       }]);
 
       if (error) throw error;
@@ -87,7 +88,7 @@ export default function MaestrosPage() {
             </p>
           </div>
 
-          {/* BOTÓN AGREGAR (SOLO VISIBLE PARA ADMIN - REQUISITO PDF) */}
+          {/* BOTON AGREGAR (SOLO VISIBLE PARA ADMIN) */}
           {user?.role === 'ADMIN' && (
             <button 
               onClick={() => setIsCreating(!isCreating)}
@@ -102,7 +103,7 @@ export default function MaestrosPage() {
           )}
         </div>
 
-        {/* FORMULARIO DE CREACIÓN (SOLO SI SE ACTIVÓ) */}
+        {/* FORMULARIO DE CREACION */}
         {isCreating && (
           <div className="bg-white p-6 rounded-xl border shadow-lg ring-1 ring-black/5">
             <h3 className="font-bold text-lg mb-4 flex items-center gap-2">

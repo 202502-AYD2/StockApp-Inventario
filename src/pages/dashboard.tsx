@@ -9,7 +9,7 @@ import {
   TrendingUp, 
 } from 'lucide-react';
 
-// 1. IMPORTAR LA LIBRERÍA DE GRÁFICAS (Esto faltaba en tu código)
+// IMPORTAR LA LIBRERIA DE GRAFICAS
 import { 
   BarChart, 
   Bar, 
@@ -37,7 +37,7 @@ export default function Dashboard() {
     lowStock: 0
   });
 
-  // 2. ESTADO PARA LOS DATOS DE LA GRÁFICA (Esto faltaba)
+  // ESTADO PARA LOS DATOS DE LA GRAFICA
   const [chartData, setChartData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function Dashboard() {
 
   const fetchStats = async (currentUser: any) => {
     try {
-      // --- CARGA DE DATOS BÁSICOS ---
+      // CARGA DE DATOS
       const { count: productsCount } = await supabase
         .from('Product')
         .select('*', { count: 'exact', head: true });
@@ -78,7 +78,7 @@ export default function Dashboard() {
         lowStock: lowStockData?.length || 0
       });
 
-      // --- 3. LOGICA PARA LLENAR LA GRÁFICA (Esto faltaba) ---
+      // LLENAR LA GRAFICA
       const { data: movements } = await supabase
         .from('Movement')
         .select('type, quantity');
@@ -140,9 +140,9 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* --- TARJETAS --- */}
+        {/*TARJETAS */}
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-           {/* Total Productos */}
+           {/* Total poductos */}
            <div className="p-6 bg-white rounded-xl border shadow-sm flex items-center justify-between hover:shadow-md transition-all">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Total Productos</p>
@@ -153,7 +153,7 @@ export default function Dashboard() {
               </div>
            </div>
            
-           {/* Alerta Stock */}
+           {/* Alerta de stock */}
            <div className={`p-6 rounded-xl border shadow-sm flex items-center justify-between hover:shadow-md transition-all ${stats.lowStock > 0 ? 'bg-red-50 border-red-200' : 'bg-white'}`}>
               <div>
                 <p className={`text-sm font-medium ${stats.lowStock > 0 ? 'text-red-600' : 'text-muted-foreground'}`}>Alerta Stock</p>
@@ -178,7 +178,7 @@ export default function Dashboard() {
            )}
         </div>
 
-        {/* --- 4. AQUÍ ESTÁ EL COMPONENTE DE LA GRÁFICA REAL --- */}
+        {/* COMPONENTE DE LA GRÁFICA REAL*/}
         <div className="grid gap-6 md:grid-cols-1">
           <div className="bg-white p-6 rounded-xl border shadow-sm h-[450px]">
             <div className="flex items-center justify-between mb-6">
@@ -191,7 +191,7 @@ export default function Dashboard() {
               </div>
             </div>
             
-            {/* Si chartData está vacío (porque no has hecho transacciones), mostramos aviso */}
+            {/* Si chartData esta vacio (porque no se han hecho transacciones), mostramos aviso */}
             {chartData.length > 0 && (chartData[0].cantidad > 0 || chartData[1].cantidad > 0) ? (
                 <ResponsiveContainer width="100%" height="85%">
                 <BarChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
